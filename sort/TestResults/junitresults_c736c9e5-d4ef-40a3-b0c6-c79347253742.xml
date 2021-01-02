@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="0" failures="4" hostname="DESKTOP-236OO3F" name="pytest" skipped="0" tests="4" time="6.565" timestamp="2020-02-11T19:26:14.855638"><testcase classname="test_sort.TestCodingStandards" file="test_sort.py" line="76" name="test_code_quality" time="5.824"><failure message="AssertionError: -1.18 not greater than or equal to 8.5">self = &lt;test_sort.TestCodingStandards testMethod=test_code_quality&gt;
+
+    def test_code_quality(self):
+        from pylint import epylint as lint
+        import glob
+        for file_name in glob.glob(&apos;*.py&apos;):
+            if file_name[:5] != &quot;test_&quot; and file_name != &quot;recursioncounter.py&quot;:
+                (pylint_stdout, _) = lint.py_run(file_name, return_std=True)
+                output = pylint_stdout.getvalue()
+                offset = output.rfind(&quot; been rated at &quot;)
+                if offset != -1:
+                    output = output[offset:]
+                    end = output.find(&apos;/&apos;)
+                    output = output[15:end]
+                    score = float(output)
+&gt;                   self.assertGreaterEqual(score, 8.5)
+E                   AssertionError: -1.18 not greater than or equal to 8.5
+
+test_sort.py:90: AssertionError</failure></testcase><testcase classname="test_sort.TestIsSorted" file="test_sort.py" line="52" name="test_sorted_list" time="0.215"><failure message="AssertionError: False is not true">self = &lt;test_sort.TestIsSorted testMethod=test_sorted_list&gt;
+
+    def test_sorted_list(self):
+        data_size = 1000
+        seed(42)
+        orig_data = sample(range(data_size * 3), k=data_size)
+    
+        self.assertFalse(is_sorted(orig_data))
+        test_data = selection_sort(orig_data.copy())
+&gt;       self.assertTrue(is_sorted(test_data))
+E       AssertionError: False is not true
+
+test_sort.py:60: AssertionError</failure></testcase><testcase classname="test_sort.TestParameterTypes" file="test_sort.py" line="68" name="test_parameters" time="0.003"><failure message="TypeError: &apos;&gt;&apos; not supported between instances of &apos;int&apos; and &apos;str&apos;">self = &lt;test_sort.TestParameterTypes testMethod=test_parameters&gt;
+
+    def test_parameters(self):
+        self.assertRaises(ValueError, mergesort, &quot;cat&quot;)
+        self.assertRaises(ValueError, quicksort, &quot;cat&quot;)
+        self.assertRaises(ValueError, insertion_sort, &quot;cat&quot;)
+        self.assertRaises(ValueError, selection_sort, &quot;cat&quot;)
+&gt;       self.assertRaises(ValueError, is_sorted, [1,2,&quot;cat&quot;,4])
+
+test_sort.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def is_sorted(lyst): # this has been checked and works.
+        if (type(lyst) != list): # raises ValueError if item recieved is not a list.
+            raise ValueError(&quot;Information provided not a list&quot;)
+        x = 0
+        while( x &lt; (len(lyst)-1)): # iterates through entire list.
+            if (type(lyst[x]) != int): # raises ValueError if any element of list is not an integer.
+                raise ValueError(&quot;All elements should be integers&quot;)
+&gt;           if (lyst[x] &gt; lyst[x+1]): # returns false if any preceding value is greater than its following value.
+E           TypeError: &apos;&gt;&apos; not supported between instances of &apos;int&apos; and &apos;str&apos;
+
+sort.py:182: TypeError</failure></testcase><testcase classname="test_sort.TestSortTiming" file="test_sort.py" line="7" name="test_sort_times" time="0.279"><failure message="AssertionError: False is not true">self = &lt;test_sort.TestSortTiming testMethod=test_sort_times&gt;
+
+    def test_sort_times(self):
+        data_size = 1000
+        seed(42)
+        data = sample(range(data_size * 3), k=data_size)
+    
+        # selection sort
+        test = data.copy()
+        start = perf_counter()
+        test = selection_sort(test)
+        selection_elapsed_time = perf_counter() - start
+&gt;       self.assertTrue(is_sorted(test))
+E       AssertionError: False is not true
+
+test_sort.py:18: AssertionError</failure></testcase></testsuite></testsuites>
